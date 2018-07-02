@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+<meta charset="utf-8" />
+<title>新鲜蔬菜</title>
+<meta name="keywords" content="KEYWORDS..." />
+<meta name="description" content="DESCRIPTION..." />
+<meta name="author" content="DeathGhost" />
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name='apple-touch-fullscreen' content='yes'/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<meta name="format-detection" content="telephone=no"/>
+<meta name="format-detection" content="address=no"/>
+<link rel="icon" href="/wap/images/icon/favicon.ico"
+	type="image/x-icon"/>
+<link rel="apple-touch-icon-precomposed" sizes="57x57"
+	href="/wap/images/icon/apple-touch-icon-57x57-precomposed.png"/>
+<link rel="apple-touch-icon-precomposed" sizes="120x120"
+	href="/wap/images/icon/apple-touch-icon-120x120-precomposed.png"/>
+<link rel="apple-touch-icon-precomposed" sizes="196x196"
+	href="/wap/images/icon/apple-touch-icon-196x196-precomposed.png"/>
+<meta name="viewport"
+	content="initial-scale=1, width=device-width, maximum-scale=1, user-scalable=no"/>
+<link rel="stylesheet" type="text/css"
+	href="/wap/css/style.css" />
+<script src="/wap/js/jquery.js"></script>
+<script src="/wap/js/swiper.min.js"></script>
+<script>
+$(document).ready(function(){
+	var mySwiper = new Swiper('#slide',{
+		  autoplay:5000,
+		  visibilityFullFit : true,
+		  loop:true,
+		  pagination : '.pagination',
+	  });
+	//product list:Tab
+	$(".tab_proList dd").eq(0).show().siblings(".tab_proList dd").hide();
+	$(".tab_proList dt a").eq(0).addClass("currStyle");
+	$(".tab_proList dt a").click(function(){
+	var liindex = $(".tab_proList dt a").index(this);
+	$(this).addClass("currStyle").siblings().removeClass("currStyle");
+	$(".tab_proList dd").eq(liindex).fadeIn(150).siblings(".tab_proList dd").hide();
+	});
+   //飞入动画，具体根据实际情况调整
+   $(".addToCart").click(function(){
+	        $(".hoverCart a").html(parseInt($(".hoverCart a").html())+1);/*测试+1*/
+            var shopOffset = $(".hoverCart").offset();
+            var cloneDiv = $(this).parent().siblings(".goodsPic").clone();
+            var proOffset = $(this).parent().siblings(".goodsPic").offset();
+            cloneDiv.css({ "position": "absolute", "top": proOffset.top, "left": proOffset.left });
+            $(this).parent().siblings(".goodsPic").parent().append(cloneDiv);
+            cloneDiv.animate({
+				width:0,
+				height:0,
+                left: shopOffset.left,
+                top: shopOffset.top,
+				opacity:1
+            },"slow");
+	   });
+});
+</script>
+</head>
+<body>
+	<!--header-->
+	<header>
+		<a href="location.html" class="location">${city}</a>
+		<h1 class="logoIcon" style="font-size: .85rem;">&#35;</h1>
+		<a href="search.html" class="rt_searchIcon">&#37;</a>
+	</header>
+	<div style="height: 1rem;"></div>
+	<!--slide-->
+	<div id="slide">
+		<div class="swiper-wrapper" th:each="banner:${bannerList}">
+			<div class="swiper-slide">
+				<a th:href="${banner.url}"> <img th:src="${banner.img}" />
+				</a>
+			</div>
+
+		</div>
+		<div class="pagination"></div>
+	</div>
+	<!--categoryList-->
+	<ul class="categoryLiIcon" >
+		<li th:each="nav:${nav_icon_list}"><a th:href="${nav.summary}"> <img th:src="${nav.img}" />
+				<em th:text="${nav.title}"></em>
+		</a></li>
+	</ul>
+	<!--Tab:productList-->
+	<dl class="tab_proList">
+		<dt>
+			<a>热销</a> <a>新品</a> <a>推荐</a>
+		</dt>
+		<dd>
+			<ul th:each="hit:${hitList}">
+				<li><a th:href="@{'/wap/goodsDetail/'+${hit.id}}" class="goodsPic"> <img
+						th:src="@{'/upload/project/'+${hit.img}}" />
+				</a>
+					<div class="goodsInfor">
+						<h2>
+							<a th:href="@{/wap/goodsDetail/${hit.id}}" th:text="${hit.title}"></a>
+						</h2>
+						<p>
+							<del th:text="${hit.prices}"></del>
+						</p>
+						<p>
+							<strong class="price" th:text="${hit.prices}"></strong>
+						</p>
+						<a th:href="@{'/wap/goodsDetail'+${hit.id}}" class="addToCart">&#126;</a>
+					</div></li>
+			</ul>
+		</dd>
+		<dd>
+			<ul th:each="xinpin:${xinpinList}">
+				<li><a th:href="@{'/wap/goodsDetail/'+${xinpin.id}}" class="goodsPic"> <img
+						th:src="@{'/upload/project/'+${xinpin.img}}" />
+				</a>
+					<div class="goodsInfor">
+						<h2>
+							<a th:href="@{'/wap/goodsDetail/'+${xinpin.id}}"  th:text="${xinpin.title}"></a>
+						</h2>
+						<p>
+							<del th:text="${xinpin.prices}"></del>
+						</p>
+						<p>
+							<strong class="price" th:text="${xinpin.prices}"></strong>
+						</p>
+						<a th:href="@{'/wap/goodsDetail/'+${xinpin.id}}"  class="addToCart">&#126;</a>
+					</div></li>
+			</ul>	
+		</dd>
+		<dd>
+			<ul th:each="com:${commList}">
+				<li><a th:href="@{'/wap/goodsDetail/'+${com.id}}" class="goodsPic"> <img
+						th:src="@{'/upload/project/'+${com.img}}" />
+				</a>
+					<div class="goodsInfor">
+						<h2>
+							<a th:href="@{'/wap/goodsDetail/'+${com.id}}" th:text="${com.title}"></a>
+						</h2>
+						<p>
+							<del th:text="${com.prices}"></del>
+						</p>
+						<p>
+							<strong class="price" th:text="${com.prices}"></strong>
+						</p>
+						<a th:href="@{'/wap/goodsDetail/'+${com.id}}" class="addToCart">&#126;</a>
+					</div></li>
+
+			</ul>	
+		</dd>
+	</dl>
+	<!--floatCart-->
+	<div class="hoverCart">
+		<a href="/wap/person/cartList">0</a>
+	</div>
+	<div style="height: 1.2rem;"></div>
+	<div th:replace="wap/layout/footNav"></div>
+	
+	<script>
+  document.oncontextmenu=new Function("event.returnValue=false;");
+  document.onselectstart=new Function("event.returnValue=false;"); 
+</script>
+
+</body>
+</html>

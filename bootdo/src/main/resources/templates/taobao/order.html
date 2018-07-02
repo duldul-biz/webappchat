@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>男装专区</title>
+    <link rel="stylesheet" type="text/css" href="/taobao/css/loaders.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/taobao/css/loading.css"/>
+    <link rel="stylesheet" type="text/css" href="/taobao/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="/taobao/css/style.css"/>
+      <script src="/taobao/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+    	$(window).load(function(){
+    		$(".loading").addClass("loader-chanage")
+    		$(".loading").fadeOut(300)
+    	})
+    </script>
+</head>
+<!--loading页开始-->
+<div class="loading">
+	<div class="loader">
+        <div class="loader-inner pacman">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+	</div>
+</div>
+<!--loading页结束-->
+<body>
+	<header class="top-header fixed-header">
+		<a class="icona" href="javascript:history.go(-1)">
+				<img src="/taobao/images/left.png"/>
+			</a>
+		<h3>全部订单</h3>
+			<a class="iconb" href="shopcar.html">
+			</a>
+	</header>
+	
+	<div class="contaniner fixed-conta">
+		<section class="order">
+			<dl th:each="order:${tOrderList}">
+				<dt>
+					<time th:text="${order.createdate}">2015-11-15 22:55:59</time>
+				<span th:text="${order.status==9 ? '待付款' : (order.status==1 ? '待收货' : (order.status==2 ? '待收货' : '已完成'))}"></span>
+				</dt>
+				<ul th:each="goods:${order.goodsList}">
+					<a th:href="@{'/taobao/goodsDetail/'+${goods.id}}">
+						<figure><img th:src="@{'/upload/project/'+${goods.img}}"/></figure>
+						<li>
+							<p th:text="${goods.goodsname}">超级大品牌服装，现在够级大品牌服装，现在够买只要998</p>
+							<small>颜色：经典绮丽款</small>
+							<span>尺寸：XL</span>
+							<b th:text="${goods.price}">￥32.00</b>
+							<strong th:text="'×'+${goods.count}">×3</strong>
+						</li>
+					</a>
+				</ul>
+				<dd>
+					<h3>商品总额</h3>
+					<i th:text="${order.totalprice}">￥98.00</i>
+				</dd>
+				<dd>
+					<input type="button" value="确认收货" class="order-que"/>
+					<input type="button" value="查看物流" onclick="javascript:location.href='/taobao/person/wuliu'" />
+					<input type="button" value="取消订单" />
+				</dd>
+			</dl>
+		</section>
+	</div>
+	
+	
+	
+	
+
+</body>
+</html>

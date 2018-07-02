@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.shop.dao.TMemberDao">
+
+	<select id="get" resultType="com.bootdo.shop.domain.TMemberDO">
+		select `id`,`username`,`password`,`addtime`,`phone`,`qq`,`email`,`trueName`,`gold`,`status`,`address`,`storeid`,`img`,`sex` from t_member where id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.shop.domain.TMemberDO">
+		select `id`,`username`,`password`,`addtime`,`phone`,`qq`,`email`,`trueName`,`gold`,`status`,`address`,`storeid`,`img`,`sex` from t_member
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="username != null and username != ''"> and username = #{username} </if>
+			<if test="password != null and password != ''"> and password = #{password} </if>
+			<if test="addtime != null and addtime != ''"> and addtime = #{addtime} </if>
+			<if test="phone != null and phone != ''"> and phone = #{phone} </if>
+			<if test="qq != null and qq != ''"> and qq = #{qq} </if>
+			<if test="email != null and email != ''"> and email = #{email} </if>
+			<if test="truename != null and truename != ''"> and trueName = #{truename} </if>
+			<if test="gold != null and gold != ''"> and gold = #{gold} </if>
+			<if test="status != null and status != ''"> and status = #{status} </if>
+			<if test="address != null and address != ''"> and address = #{address} </if>
+			<if test="storeid != null and storeid != ''"> and storeid = #{storeid} </if>
+			<if test="img != null and img != ''"> and img = #{img} </if>
+			<if test="sex != null and sex != ''"> and sex = #{sex} </if>
+		</where>
+		<choose>
+			<when test="sort != null and sort.trim() != ''">
+				order by ${sort} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="count" resultType="int">
+		select count(*) from t_member
+		<where>
+			<if test="id != null and id != ''"> and id = #{id} </if>
+			<if test="username != null and username != ''"> and username = #{username} </if>
+			<if test="password != null and password != ''"> and password = #{password} </if>
+			<if test="addtime != null and addtime != ''"> and addtime = #{addtime} </if>
+			<if test="phone != null and phone != ''"> and phone = #{phone} </if>
+			<if test="qq != null and qq != ''"> and qq = #{qq} </if>
+			<if test="email != null and email != ''"> and email = #{email} </if>
+			<if test="truename != null and truename != ''"> and trueName = #{truename} </if>
+			<if test="gold != null and gold != ''"> and gold = #{gold} </if>
+			<if test="status != null and status != ''"> and status = #{status} </if>
+			<if test="address != null and address != ''"> and address = #{address} </if>
+			<if test="storeid != null and storeid != ''"> and storeid = #{storeid} </if>
+			<if test="img != null and img != ''"> and img = #{img} </if>
+			<if test="sex != null and sex != ''"> and sex = #{sex} </if>
+		</where>
+	</select>
+
+	<insert id="save" parameterType="com.bootdo.shop.domain.TMemberDO" useGeneratedKeys="true" keyProperty="id">
+		insert into t_member
+		(
+		`username`,
+		`password`,
+		`addtime`,
+		`phone`,
+		`qq`,
+		`email`,
+		`trueName`,
+		`gold`,
+		`status`,
+		`address`,
+		`storeid`,
+		`img`,
+		`sex`
+		)
+		values
+		(
+		#{username},
+		#{password},
+		#{addtime},
+		#{phone},
+		#{qq},
+		#{email},
+		#{truename},
+		#{gold},
+		#{status},
+		#{address},
+		#{storeid},
+		#{img},
+		#{sex}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.bootdo.shop.domain.TMemberDO">
+		update t_member
+		<set>
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="addtime != null">`addtime` = #{addtime}, </if>
+			<if test="phone != null">`phone` = #{phone}, </if>
+			<if test="qq != null">`qq` = #{qq}, </if>
+			<if test="email != null">`email` = #{email}, </if>
+			<if test="truename != null">`trueName` = #{truename}, </if>
+			<if test="gold != null">`gold` = #{gold}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="storeid != null">`storeid` = #{storeid}, </if>
+			<if test="img != null">`img` = #{img}, </if>
+			<if test="sex != null">`sex` = #{sex}</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<delete id="remove">
+		delete from t_member where id = #{value}
+	</delete>
+
+	<delete id="batchRemove">
+		delete from t_member where id in
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

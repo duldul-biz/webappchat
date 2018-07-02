@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>修改密码</title>
+    <link rel="stylesheet" type="text/css" href="/taobao/css/loaders.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/taobao/css/loading.css"/>
+    <link rel="stylesheet" type="text/css" href="/taobao/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="/taobao/css/style.css"/>
+      <script src="/taobao/js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/js/plugins/layer/layer.js"></script>
+    <script type="text/javascript">
+    	$(window).load(function(){
+    		$(".loading").addClass("loader-chanage");
+    		$(".loading").fadeOut(300)
+    	});
+    	
+    </script>
+    
+</head>
+<!--loading页开始-->
+<div class="loading">
+	<div class="loader">
+        <div class="loader-inner pacman">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+	</div>
+</div>
+<!--loading页结束-->
+<body>
+	<header class="top-header">
+		<a class="text texta" href="javascript:history.go(-1)">返回</a>
+		<h3>修改密码</h3>
+	</header>
+	
+	<div class="login">
+		<form action="" method="post">
+			
+			<ul>
+				<li>
+					<img src="/taobao/images/login.png"/>
+					<input type="text" id="username" placeholder="输入用户名"/>
+				</li>
+				<li>
+					<img src="/taobao/images/password.png"/>
+					<input type="password" id="password" placeholder="输入新密码"/>
+				</li>
+				<li>
+					<img src="/taobao/images/password.png"/>
+					<input type="password" id="passwordRepeat" placeholder="输入确认密码"/>
+				</li>
+			</ul>
+			<input type="button" onclick="register()" value="注册"/>
+		</form>
+	</div>
+	<script type="text/javascript">
+        function register(){
+            var username=$("#username").val();
+            var password=$("#password").val();
+            var passwordRepeat=$("#passwordRepeat").val();
+            if(username=='' || password=='' ||passwordRepeat==''){
+                layer.msg("账号或密码为空!");
+            }
+            if(password!=passwordRepeat){
+                layer.msg("密码不一致!");
+			}
+            $.ajax({
+                type: "post",
+                url: '/taobao/reg',
+                data: {
+                    username:username,
+                    passwordRepeat:passwordRepeat,
+                    password:password
+                },
+                dataType: "json",
+                success:function(data) {
+                    if(data.code==0){
+                        window.location.href = "/taobao/person"
+                    }else{
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+        }
+	</script>
+</body>
+</html>
